@@ -1,0 +1,40 @@
+{
+  "description": "Optional automatic Engram guardian for Codex.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host codex --engram YOUR_ENGRAM_ID",
+            "timeout": 150,
+            "statusMessage": "Waking Engram guardian",
+            "additionalContextLimit": 5000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host codex --engram YOUR_ENGRAM_ID",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host codex --engram YOUR_ENGRAM_ID",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

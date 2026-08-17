@@ -1,0 +1,27 @@
+{
+  "protocol_version": "engram/v0",
+  "engram_id": "legacy-resummon",
+  "name": "Legacy Resummon",
+  "statement": "Preserve continuity across runtime upgrades.",
+  "messages": [
+    {
+      "id": "origin-1",
+      "role": "system",
+      "content": "You are reasoning about durable Agent-session continuity.",
+      "occurred_at": "0001-01-01T00:00:00Z"
+    },
+    {
+      "id": "origin-2",
+      "role": "user",
+      "content": "Keep the original conversation intact when the provider stores no remote thread.",
+      "occurred_at": "0001-01-01T00:00:00Z"
+    },
+    {
+      "id": "origin-3",
+      "role": "assistant",
+      "content": "A fresh request is acceptable only when the same historical context is resubmitted.",
+      "occurred_at": "0001-01-01T00:00:00Z"
+    }
+  ],
+  "created_at": "2026-08-15T17:03:24.2316373Z"
+}

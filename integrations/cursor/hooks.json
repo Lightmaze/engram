@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "engram hook --host cursor --engram YOUR_ENGRAM_ID",
+        "timeout": 20,
+        "failClosed": false
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "engram hook --host cursor --engram YOUR_ENGRAM_ID",
+        "timeout": 150,
+        "failClosed": false
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "engram hook --host cursor --engram YOUR_ENGRAM_ID",
+        "timeout": 20,
+        "failClosed": false
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "engram hook --host cursor --engram YOUR_ENGRAM_ID",
+        "timeout": 20,
+        "failClosed": false
+      }
+    ]
+  }
+}

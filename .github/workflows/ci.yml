@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version: ['1.22.x', '1.26.5']
+    name: go-${{ matrix.go-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go-version }}
+          cache: false
+      - run: go test -count=1 ./...
+      - run: go vet ./...
+      - run: go build -o bin/engram ./cmd/engram
+      - if: matrix.go-version == '1.26.5'
+        run: go test -race -count=1 ./...
+
+  pi:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/pi-engram
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+          run_install: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24.15.0'
+          cache: pnpm
+          cache-dependency-path: integrations/pi-engram/pnpm-lock.yaml
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.26.5'
+          cache: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm build
+      - name: Build real Engram binary for Pi lifecycle tests
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p integrations/pi-engram/.test-bin
+          go build -o integrations/pi-engram/.test-bin/engram ./cmd/engram
+      - run: pnpm test
+        env:
+          ENGRAM_V0_BINARY: ${{ github.workspace }}/integrations/pi-engram/.test-bin/engram
+          ENGRAM_V0_DATA_ROOT: ${{ runner.temp }}/accompanying-pi-tests

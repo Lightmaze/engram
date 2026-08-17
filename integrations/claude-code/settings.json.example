@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host claude-code --engram YOUR_ENGRAM_ID",
+            "timeout": 150
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host claude-code --engram YOUR_ENGRAM_ID",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "engram hook --host claude-code --engram YOUR_ENGRAM_ID",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

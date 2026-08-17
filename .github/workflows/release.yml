@@ -1,0 +1,45 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  binaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.26.5'
+          cache: false
+      - run: go test ./...
+      - name: Build cross-platform archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          test "$(go run ./cmd/engram version)" = "$version"
+          mkdir -p dist stage
+          for target in linux-amd64 linux-arm64 darwin-amd64 darwin-arm64 windows-amd64 windows-arm64; do
+            os="${target%-*}"
+            arch="${target#*-}"
+            name="engram"
+            if [ "$os" = windows ]; then name="engram.exe"; fi
+            rm -rf stage/*
+            GOOS="$os" GOARCH="$arch" CGO_ENABLED=0 go build -trimpath -ldflags='-s -w' -o "stage/$name" ./cmd/engram
+            cp README.md README.zh-CN.md LICENSE "stage/"
+            if [ "$os" = windows ]; then
+              (cd stage && zip -X -r "../dist/engram_${version}_${target}.zip" .)
+            else
+              tar --sort=name --mtime='UTC 1980-01-01' --owner=0 --group=0 --numeric-owner -czf "dist/engram_${version}_${target}.tar.gz" -C stage .
+            fi
+          done
+          (cd dist && sha256sum * > SHA256SUMS)
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

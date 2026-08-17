@@ -1,0 +1,27 @@
+[mcp_servers.engram]
+command = "engram"
+args = ["mcp"]
+env_vars = [
+  "ENGRAM_DATA",
+  "ENGRAM_DRIVER",
+  "ENGRAM_ENDPOINT",
+  "ENGRAM_MODEL",
+  "OPENAI_API_KEY",
+  "DEEPSEEK_API_KEY",
+]
+startup_timeout_sec = 10
+tool_timeout_sec = 150
+required = false
+enabled_tools = [
+  "engram_list",
+  "engram_create",
+  "engram_summon",
+  "engram_wake",
+  "engram_observe",
+  "engram_release",
+  "engram_outcome",
+  "engram_fold_status",
+  "engram_fold_revert",
+  "engram_guardian_take",
+]
+default_tools_approval_mode = "approve"

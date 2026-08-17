@@ -1,0 +1,19 @@
+{
+  "id": "design-ancestor",
+  "name": "Design Ancestor",
+  "statement": "Protect the original problem structure and name meaningful drift.",
+  "messages": [
+    {
+      "id": "message-1",
+      "role": "user",
+      "content": "A past Agent session should be able to return as a participant, not merely as retrieved text.",
+      "source": "explicit-import"
+    },
+    {
+      "id": "message-2",
+      "role": "assistant",
+      "content": "Then the Engram must retain its own original context and decide what to say from that historical position.",
+      "source": "explicit-import"
+    }
+  ]
+}
